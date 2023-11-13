@@ -6,7 +6,7 @@ pipeline {
     }
     
     environment {
-        USED_RAM=`free -m | grep Mem | awk {'print $3'}`
+        USER_ROOT='duongdx-kma'
     }
 
     triggers {
