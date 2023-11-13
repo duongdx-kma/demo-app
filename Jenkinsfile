@@ -36,7 +36,7 @@ pipeline {
                 python3 hello.py
                 python3 hello.py --name=Brad
                 '''
-            },
+            }
             post {
                 success {
                     echo 'Archiving artifacts now'
