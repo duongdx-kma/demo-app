@@ -4,10 +4,21 @@ pipeline {
             label 'docker-agent-python'
         }
     }
+    
+    environment {
+        USED_RAM=`free -m | grep Mem | awk {'print $3'}`
+    }
+
     triggers {
-        pollSCM '* * * * *'
+        pollSCM '*/5 * * * *'
     }
     stages {
+        stage('fetching code') {
+            steps {
+                git branch: 'master', url: 'https://github.com/duongdx-kma/demo-app.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Build step ...'
@@ -25,6 +36,12 @@ pipeline {
                 python3 hello.py
                 python3 hello.py --name=Brad
                 '''
+            },
+            post {
+                success {
+                    echo 'Archiving artifacts now'
+                    archiveArtifacts artifacts: '**/*.txt'
+                }
             }
         }
         stage('Deliver') {
